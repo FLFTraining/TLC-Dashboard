@@ -43,7 +43,7 @@ function updateKPI(data) {
   const complianceRate = (totalCompleted / totalAssignments * 100).toFixed(1);
 
   const avgScore = completed
-    .map(r => parseFloat(r.Score))
+    .map(r => parseFloat(r["Average score"]))
     .filter(n => !isNaN(n))
     .reduce((a, b) => a + b, 0) / totalCompleted;
 
@@ -62,13 +62,14 @@ function populateSummaryTab(data) {
 
   data.forEach(row => {
     const course = row.Course;
+    if (!course) return;
     if (!summary[course]) {
       summary[course] = { assigned: 0, completed: 0, scores: [] };
     }
     summary[course].assigned++;
     if (row.Status === "Completed") {
       summary[course].completed++;
-      summary[course].scores.push(parseFloat(row.Score || 0));
+      summary[course].scores.push(parseFloat(row["Average score"] || 0));
     }
   });
 
@@ -96,6 +97,7 @@ function populateCourseTab(data) {
 
   data.forEach(row => {
     const course = row.Course;
+    if (!course) return;
     const type = row.Course.startsWith("TLC") ? "TLC" : "CE";
     if (!summary[course]) {
       summary[course] = { type, assigned: 0, completed: 0 };
