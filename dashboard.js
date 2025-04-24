@@ -33,12 +33,14 @@ function populateDashboard(data) {
   updateKPI(data);
   populateSummaryTab(data);
   populateCourseTab(data);
+  populateDepartmentTab(data);
+  populateIndividualTab(data);
 }
 
 function updateKPI(data) {
   const totalCourses = new Set(data.map(row => row.Course)).size;
   const totalAssignments = data.length;
-  const completed = data.filter(r => r.Status === "Completed");
+  const completed = data.filter(r => r.Status.includes("Completed"));
   const totalCompleted = completed.length;
   const complianceRate = (totalCompleted / totalAssignments * 100).toFixed(1);
 
@@ -67,7 +69,7 @@ function populateSummaryTab(data) {
       summary[course] = { assigned: 0, completed: 0, scores: [] };
     }
     summary[course].assigned++;
-    if (row.Status === "Completed") {
+    if (row.Status.includes("Completed")) {
       summary[course].completed++;
       summary[course].scores.push(parseFloat(row["Average score"] || 0));
     }
@@ -97,13 +99,13 @@ function populateCourseTab(data) {
 
   data.forEach(row => {
     const course = row.Course;
+    const type = row.Course?.startsWith("TLC") ? "TLC" : "CE";
     if (!course) return;
-    const type = row.Course.startsWith("TLC") ? "TLC" : "CE";
     if (!summary[course]) {
       summary[course] = { type, assigned: 0, completed: 0 };
     }
     summary[course].assigned++;
-    if (row.Status === "Completed") {
+    if (row.Status.includes("Completed")) {
       summary[course].completed++;
     }
   });
@@ -134,4 +136,113 @@ function populateCourseTab(data) {
       </tr>
     `);
   }
+}
+
+function populateDepartmentTab(data) {
+  const table = document.getElementById("departments-table");
+  table.innerHTML = "";
+
+  const summary = {};
+
+  data.forEach(row => {
+    const dept = row.Department;
+    if (!dept) return;
+    if (!summary[dept]) {
+      summary[dept] = { assigned: 0, completed: 0 };
+    }
+    summary[dept].assigned++;
+    if (row.Status.includes("Completed")) {
+      summary[dept].completed++;
+    }
+  });
+
+  for (const [dept, stats] of Object.entries(summary)) {
+    const compliance = ((stats.completed / stats.assigned) * 100).toFixed(1);
+    const statusColor =
+      compliance >= 80 ? "bg-green-500" :
+      compliance >= 50 ? "bg-yellow-500" :
+      "bg-red-500";
+    const statusLabel =
+      compliance >= 80 ? "Excellent" :
+      compliance >= 50 ? "Good" :
+      "Needs Attention";
+
+    table.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td class="py-2 px-4 border">${dept}</td>
+        <td class="py-2 px-4 border text-center">${stats.assigned}</td>
+        <td class="py-2 px-4 border text-center">${stats.completed}</td>
+        <td class="py-2 px-4 border text-center">${compliance}%</td>
+        <td class="py-2 px-4 border text-center">
+          <span class="px-2 py-1 rounded text-white text-xs ${statusColor}">
+            ${statusLabel}
+          </span>
+        </td>
+      </tr>
+    `);
+  }
+}
+
+function populateIndividualTab(data) {
+  const table = document.getElementById("individual-table");
+  table.innerHTML = "";
+
+  data.forEach(row => {
+    if (!row.Course) return;
+    const score = parseFloat(row["Average score"]);
+    const badgeColor = row.Status.includes("Completed") ? "bg-green-500" : "bg-red-500";
+
+    table.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td class="py-2 px-4 border">${row["First name"]} ${row["Last name"]}</td>
+        <td class="py-2 px-4 border">${row.Department}</td>
+        <td class="py-2 px-4 border">${row.Course}</td>
+        <td class="py-2 px-4 border text-center">
+          <span class="px-2 py-1 rounded text-white text-xs ${badgeColor}">
+            ${row.Status}
+          </span>
+        </td>
+        <td class="py-2 px-4 border text-center">${isNaN(score) ? "—" : score}</td>
+      </tr>
+    `);
+  });
+}
+
+
+// Date filter logic
+let fullData = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+  Papa.parse("FLF_Daily_Training_Data_April22_2025.csv", {
+    download: true,
+    header: true,
+    complete: (results) => {
+      fullData = results.data;
+      setupTabs();
+      populateDashboard(fullData);
+      setupDateFilter();
+    },
+  });
+});
+
+function setupDateFilter() {
+  document.getElementById("apply-filter").addEventListener("click", () => {
+    const start = document.getElementById("start-date").value;
+    const end = document.getElementById("end-date").value;
+
+    let filtered = fullData.filter(row => {
+      const date = new Date(row["Enrolled on"]);
+      if (start && date < new Date(start)) return false;
+      if (end && date > new Date(end)) return false;
+      return true;
+    });
+
+    populateDashboard(filtered);
+  });
+
+  document.getElementById("reset-filter").addEventListener("click", () => {
+    document.getElementById("start-date").value = "";
+    document.getElementById("end-date").value = "";
+    populateDashboard(fullData);
+  });
 }
