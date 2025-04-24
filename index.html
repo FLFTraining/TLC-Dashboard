@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <!-- Tabs -->
+    <!-- Summary Tab -->
     <div id="summary-tab" class="tab-panel">
       <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 class="text-lg font-semibold mb-4">Training Summary</h2>
@@ -71,10 +71,46 @@
       </div>
     </div>
 
-    <!-- Other tabs will be implemented later -->
+    <!-- Courses Tab -->
+    <div id="courses-tab" class="tab-panel hidden">
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-lg font-semibold mb-4">Course Compliance Analysis</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white border">
+            <thead class="bg-gray-200">
+              <tr>
+                <th class="py-2 px-4 border text-left">Course</th>
+                <th class="py-2 px-4 border text-center">Type</th>
+                <th class="py-2 px-4 border text-center">Assigned</th>
+                <th class="py-2 px-4 border text-center">Completed</th>
+                <th class="py-2 px-4 border text-center">Compliance %</th>
+                <th class="py-2 px-4 border text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="courses-table">
+              <tr><td colspan="6" class="text-center py-4">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Departments Tab -->
+    <div id="departments-tab" class="tab-panel hidden">
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h2 class="text-lg font-semibold">Departments tab coming soon</h2>
+      </div>
+    </div>
+
+    <!-- Individual Tab -->
+    <div id="individual-tab" class="tab-panel hidden">
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h2 class="text-lg font-semibold">Individual tab coming soon</h2>
+      </div>
+    </div>
   </div>
 
   <!-- JavaScript -->
-  <script src="dashboard-js.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>

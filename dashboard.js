@@ -32,6 +32,7 @@ function setupTabs() {
 function populateDashboard(data) {
   updateKPI(data);
   populateSummaryTab(data);
+  populateCourseTab(data);
 }
 
 function updateKPI(data) {
@@ -82,6 +83,52 @@ function populateSummaryTab(data) {
         <td class="py-2 px-4 border text-center">${stats.completed}</td>
         <td class="py-2 px-4 border text-center">${compliance}%</td>
         <td class="py-2 px-4 border text-center">${avg}</td>
+      </tr>
+    `);
+  }
+}
+
+function populateCourseTab(data) {
+  const table = document.getElementById("courses-table");
+  table.innerHTML = "";
+
+  const summary = {};
+
+  data.forEach(row => {
+    const course = row.Course;
+    const type = row.Course.startsWith("TLC") ? "TLC" : "CE";
+    if (!summary[course]) {
+      summary[course] = { type, assigned: 0, completed: 0 };
+    }
+    summary[course].assigned++;
+    if (row.Status === "Completed") {
+      summary[course].completed++;
+    }
+  });
+
+  for (const [course, stats] of Object.entries(summary)) {
+    const compliance = ((stats.completed / stats.assigned) * 100).toFixed(1);
+    const statusColor =
+      compliance >= 80 ? "bg-green-500" :
+      compliance >= 50 ? "bg-yellow-500" :
+      "bg-red-500";
+    const statusLabel =
+      compliance >= 80 ? "Good" :
+      compliance >= 50 ? "Adequate" :
+      "Needs Attention";
+
+    table.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td class="py-2 px-4 border">${course}</td>
+        <td class="py-2 px-4 border text-center">${stats.type}</td>
+        <td class="py-2 px-4 border text-center">${stats.assigned}</td>
+        <td class="py-2 px-4 border text-center">${stats.completed}</td>
+        <td class="py-2 px-4 border text-center">${compliance}%</td>
+        <td class="py-2 px-4 border text-center">
+          <span class="px-2 py-1 rounded text-white text-xs ${statusColor}">
+            ${statusLabel}
+          </span>
+        </td>
       </tr>
     `);
   }
