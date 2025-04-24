@@ -16,7 +16,7 @@
       <div class="flex flex-col md:flex-row justify-between items-center">
         <div>
           <h1 class="text-2xl font-bold text-gray-800">Farahi Law Firm Training Dashboard</h1>
-          <p class="text-gray-600" id="date-display">Training Report</p>
+          <p class="text-gray-600">Training Report</p>
         </div>
         <div class="flex flex-col sm:flex-row items-center gap-2 mt-4 md:mt-0">
           <label class="text-sm">Start Date:</label>
@@ -60,46 +60,45 @@
       </div>
     </div>
 
-    <!-- All Tabs Included -->
+    <!-- Tab Panels -->
     <div id="summary-tab" class="tab-panel">
       <h2 class="text-xl font-semibold mb-2">Training Summary</h2>
       <button class="mb-2 bg-blue-600 text-white px-3 py-1 rounded-md">Export PDF</button>
-      <button class="mb-2 bg-gray-500 text-white px-3 py-1 rounded-md">Export Excel</button>
-      <div id="summary-chart" class="mb-4 hidden">[Chart Placeholder]</div>
-      <table id="summary-courses-table" class="w-full bg-white border"></table>
+      <button class="mb-2 bg-gray-600 text-white px-3 py-1 rounded-md">Export Excel</button>
+      <div id="summary-chart" class="my-4 hidden">[Chart Placeholder]</div>
+      <table id="summary-courses-table" class="min-w-full bg-white border"></table>
     </div>
 
     <div id="courses-tab" class="tab-panel hidden">
       <h2 class="text-xl font-semibold mb-2">Courses</h2>
       <button class="mb-2 bg-blue-600 text-white px-3 py-1 rounded-md">Export PDF</button>
-      <button class="mb-2 bg-gray-500 text-white px-3 py-1 rounded-md">Export Excel</button>
-      <div id="courses-chart" class="mb-4 hidden">[Chart Placeholder]</div>
-      <table id="courses-table" class="w-full bg-white border"></table>
+      <button class="mb-2 bg-gray-600 text-white px-3 py-1 rounded-md">Export Excel</button>
+      <div id="courses-chart" class="my-4 hidden">[Chart Placeholder]</div>
+      <table id="courses-table" class="min-w-full bg-white border"></table>
     </div>
 
     <div id="departments-tab" class="tab-panel hidden">
       <h2 class="text-xl font-semibold mb-2">Departments</h2>
       <select id="department-filter" class="mb-4 p-2 border rounded-md"><option value="">All Departments</option></select>
       <button class="mb-2 bg-blue-600 text-white px-3 py-1 rounded-md">Export PDF</button>
-      <button class="mb-2 bg-gray-500 text-white px-3 py-1 rounded-md">Export Excel</button>
-      <div id="departments-chart" class="mb-4 hidden">[Chart Placeholder]</div>
-      <table id="departments-table" class="w-full bg-white border"></table>
+      <button class="mb-2 bg-gray-600 text-white px-3 py-1 rounded-md">Export Excel</button>
+      <div id="departments-chart" class="my-4 hidden">[Chart Placeholder]</div>
+      <table id="departments-table" class="min-w-full bg-white border"></table>
     </div>
 
     <div id="individual-tab" class="tab-panel hidden">
       <h2 class="text-xl font-semibold mb-2">Individuals</h2>
-      <div class="flex gap-2 mb-2">
+      <div class="flex flex-col md:flex-row gap-4 mb-2">
         <select id="individual-dept-filter" class="p-2 border rounded-md"><option value="">All Departments</option></select>
         <input type="text" id="individual-name-search" class="p-2 border rounded-md" placeholder="Search by name..." />
       </div>
       <button class="mb-2 bg-blue-600 text-white px-3 py-1 rounded-md">Export PDF</button>
-      <button class="mb-2 bg-gray-500 text-white px-3 py-1 rounded-md">Export Excel</button>
-      <div id="individual-chart" class="mb-4 hidden">[Chart Placeholder]</div>
-      <table id="individual-table" class="w-full bg-white border"></table>
+      <button class="mb-2 bg-gray-600 text-white px-3 py-1 rounded-md">Export Excel</button>
+      <div id="individual-chart" class="my-4 hidden">[Chart Placeholder]</div>
+      <table id="individual-table" class="min-w-full bg-white border"></table>
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script src="dashboard.js"></script>
 </body>
 </html>
