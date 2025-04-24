@@ -231,7 +231,11 @@ function setupDateFilter() {
     const end = document.getElementById("end-date").value;
 
     let filtered = fullData.filter(row => {
-      const date = new Date(row["Enrolled on"]);
+      
+    const enrolledRaw = row["Enrolled on"];
+    if (!enrolledRaw) return false;
+    const date = new Date(enrolledRaw.split(" ")[0]);
+    
       if (start && date < new Date(start)) return false;
       if (end && date > new Date(end)) return false;
       return true;
